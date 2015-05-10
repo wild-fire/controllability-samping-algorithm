@@ -16,6 +16,7 @@ public class SamplingAlgorithm {
 	
 	public static void main(String[] args) throws Exception  {
 		Configuration conf = new Configuration();
+		conf.set("com.wildfire.graph_file_path", args[0]);
 		Job job = Job.getInstance(conf, "controllability sampling algorithm");
 		job.setJarByClass(SamplingAlgorithm.class);
 		job.setInputFormatClass(GraphInputFormat.class);
@@ -24,7 +25,6 @@ public class SamplingAlgorithm {
 		job.setReducerClass(LongSumReducer.class);
 		job.setOutputKeyClass(Text.class);
 		job.setOutputValueClass(LongWritable.class);
-		FileInputFormat.addInputPath(job, new Path(args[0]));
 		FileOutputFormat.setOutputPath(job, new Path(args[1]));
 		System.exit(job.waitForCompletion(true) ? 0 : 1);
 
