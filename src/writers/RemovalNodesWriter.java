@@ -17,30 +17,20 @@ import org.apache.hadoop.mapreduce.JobContext;
 import vos.MMS;
 
 /**
- * This class writes the file that will be feeded into the Hadoop Job and thus it writes in each line all the information the mapper will need: The current MMS and the node to be removed
+ * This class writes the file that will be feeded into the Hadoop Job and thus it writes in each line the node to be removed from the MMS on each mapper
  * @author David J. Brenes
  *
  */
-public class AlternativeMMSWriter {
+public class RemovalNodesWriter {
 	
 	public static void write(MMS mms, JobContext context) throws IOException, URISyntaxException{
 
 		// First, we open the alternatives file 
-		URI mmsURI = new URI(context.getConfiguration().get("com.wildfire.alternative_mms_file_path"));
+		URI mmsURI = new URI(context.getConfiguration().get("com.wildfire.removal_nodes_file_path"));
 		Path mmsPath = new Path(mmsURI);
 		FSDataOutputStream mmsStream = FileSystem.get(mmsURI, context.getConfiguration()).create(mmsPath);
 
 		BufferedWriter mmsFile = new BufferedWriter(new OutputStreamWriter(mmsStream));
-		
-		// Now we build the string for the edges		
-		StringBuilder edgesString = new StringBuilder();
-		
-		for(String source : Collections.list(mms.getEdges().keys())) {
-			edgesString.append(source);
-			edgesString.append(',');
-			edgesString.append(mms.getEdges().get(source));
-			edgesString.append(';');
-		}
 		
 		// Now, we get the matched nodes and get ready to obtain the random nodes
 		ArrayList<String> matchedNodes = new ArrayList<String>(mms.getMatchedNodes());
@@ -49,10 +39,9 @@ public class AlternativeMMSWriter {
 		
 		// And now, we get N*log(N) random matched nodes from the MMS and set them to be removed by the mappers
 		int n = mms.getGraph().getNumberOfNodes();
+		System.out.println(n);
 		for(int i = 0; i < n*Math.log(n); i++) {
 			mmsFile.write(matchedNodes.get(random.nextInt(matchedSize)));
-			mmsFile.write('-');
-			mmsFile.write(edgesString.toString());
 			if(i < (n*Math.log(n) - 1)) {
 				mmsFile.newLine();
 			}
