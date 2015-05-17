@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Random;
+import java.util.Set;
 
 public class Graph {
 
@@ -20,8 +21,12 @@ public class Graph {
 		return this.neighbours.keySet().size();
 	}
 
-	public Iterator<String> getNeighbours(String node){
+	public Iterator<String> getNeighboursIterator(String node){
 		return this.neighbours.get(node).iterator();		
+	}
+
+	public Set<String> getNeighbours(String node){
+		return this.neighbours.get(node);		
 	}
 	
 	public void addEdge(String source, String target){
@@ -55,6 +60,12 @@ public class Graph {
 		
 		return mms;
 		
+	}
+	
+	public void removeIncomingEdge(String node) {
+		for( HashSet<String> neighbours : this.neighbours.values()) {
+			neighbours.remove(node);
+		}
 	}
 
 
