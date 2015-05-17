@@ -17,7 +17,7 @@ import vos.MMS;
 public class MMSReader {
 	public static MMS read(Graph graph, JobContext context) throws IOException, URISyntaxException{
 
-		URI graphURI = new URI(context.getConfiguration().get("com.wildfire.graph_file_path"));
+		URI graphURI = new URI(context.getConfiguration().get("com.wildfire.mms_file_path"));
 		Path graphPath = new Path(graphURI);
 		FSDataInputStream graphStream = FileSystem.get(graphURI, context.getConfiguration()).open(graphPath);
 		
