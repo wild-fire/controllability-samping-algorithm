@@ -58,7 +58,21 @@ public class MMS {
 		
 		// And finally we add the edges (both the normal and the reverse one).
 		this.edges.put(source, target);
-		this.reverseEdges.put(source, target);
+		this.reverseEdges.put(target, source);
+		
+	}
+	
+	public void removeEdge(String source, String target) {
+		// First, if the target was a matched node, then we remove it, as it's unmatched now 
+		if (this.matchedNodes.contains(target)) {
+			this.matchedNodes.remove(target);
+		}
+		// Then, adding the target to the unmatched ones
+		this.unmatchedNodes.add(target);
+		
+		// And finally we add the edges (both the normal and the reverse one).
+		this.edges.remove(source);
+		this.reverseEdges.remove(target);
 		
 	}
 	
@@ -82,11 +96,8 @@ public class MMS {
 	    // We get the out node matching the removal node
 	    String outNode = this.reverseEdges.get(removalNode);
 	    
-	    // We remove the removal node from the MMS
-	    this.matchedNodes.remove(removalNode);
-	    // And the edges
-	    this.reverseEdges.remove(removalNode);
-	    this.edges.remove(outNode);
+	    // We remove the edge from outNode to the removal node
+	    this.removeEdge(outNode, removalNode);
 	    
 	    // We remove every incoming edge to our removal node in the graph
 	    // We don't remove the node itself or any outgoing edge as we will need it later
@@ -126,9 +137,10 @@ public class MMS {
 		} else {
 		    // We get the out node matching the target
 		    String outNode = this.reverseEdges.get(target);
-		    // We remove the edge linking this out node and our target
-		    this.reverseEdges.remove(target);
-		    this.edges.remove(outNode);
+		    
+		    // We remove the edge from outNode to the target
+		    this.removeEdge(outNode, target);
+
 		    // We add the edge we want to create
 		    this.addEdge(source, target);
 		    // We add the target to our path
