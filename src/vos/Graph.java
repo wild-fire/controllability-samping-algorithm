@@ -1,35 +1,17 @@
 package vos;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
-
-import org.apache.hadoop.fs.FSDataInputStream;
+import java.util.Random;
+import java.util.Set;
 
 public class Graph {
 
 	private Hashtable<String, HashSet<String>> neighbours = new Hashtable<String, HashSet<String>>();
-	private BufferedReader graphFile;
-	
-	public Graph(FSDataInputStream graphFile) throws IOException {
-		this.graphFile = new BufferedReader(new InputStreamReader(graphFile));
-		String line;
-		
-		while((line = this.graphFile.readLine())!= null) {
-			String[] lineInfo = line.split("\t");
-			if(!this.neighbours.containsKey(lineInfo[0])) {
-				this.neighbours.put(lineInfo[0], new HashSet<String>());
-			}
-			if(!this.neighbours.containsKey(lineInfo[1])) {
-				this.neighbours.put(lineInfo[1], new HashSet<String>());
-			}
-			this.neighbours.get(lineInfo[0]).add(lineInfo[1]);
-		}
-	}
 
 	public Enumeration<String> getNodes(){
 		return this.neighbours.keys();		
@@ -39,8 +21,51 @@ public class Graph {
 		return this.neighbours.keySet().size();
 	}
 
-	public Iterator<String> getNeighbours(String node){
+	public Iterator<String> getNeighboursIterator(String node){
 		return this.neighbours.get(node).iterator();		
+	}
+
+	public Set<String> getNeighbours(String node){
+		return this.neighbours.get(node);		
+	}
+	
+	public void addEdge(String source, String target){
+		if(!this.neighbours.containsKey(source)) {
+			this.neighbours.put(source, new HashSet<String>());
+		}
+		if(!this.neighbours.containsKey(target)) {
+			this.neighbours.put(target, new HashSet<String>());
+		}
+		this.neighbours.get(source).add(target);
+	}
+	
+	
+	public MMS getMMS() {
+		MMS mms = new MMS(this);
+		
+		for(String source : Collections.list(neighbours.keys()) ) {
+			HashSet<String> targets = neighbours.get(source);
+			ArrayList<String> unmatchedTargets = new ArrayList<String>();
+			
+			for(String target: targets) {
+				if(!mms.isMatched(target)) {
+					unmatchedTargets.add(target);
+				}
+			}
+			if(!unmatchedTargets.isEmpty()) {
+				Collections.shuffle(unmatchedTargets);
+				mms.addEdge(source, unmatchedTargets.get(0));
+			}
+		}
+		
+		return mms;
+		
+	}
+	
+	public void removeIncomingEdge(String node) {
+		for( HashSet<String> neighbours : this.neighbours.values()) {
+			neighbours.remove(node);
+		}
 	}
 
 
