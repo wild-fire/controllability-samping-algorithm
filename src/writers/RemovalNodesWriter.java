@@ -39,7 +39,6 @@ public class RemovalNodesWriter {
 		
 		// And now, we get N*log(N) random matched nodes from the MMS and set them to be removed by the mappers
 		int n = mms.getGraph().getNumberOfNodes();
-		System.out.println(n);
 		for(int i = 0; i < n*Math.log(n); i++) {
 			mmsFile.write(matchedNodes.get(random.nextInt(matchedSize)));
 			if(i < (n*Math.log(n) - 1)) {
