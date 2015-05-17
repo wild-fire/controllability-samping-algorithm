@@ -36,7 +36,7 @@ public class Graph {
 	
 	
 	public MMS getMMS() {
-		MMS mms = new MMS();
+		MMS mms = new MMS(this);
 		
 		for(String source : Collections.list(neighbours.keys()) ) {
 			HashSet<String> targets = neighbours.get(source);

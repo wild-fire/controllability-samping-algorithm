@@ -27,7 +27,19 @@ public class MMS {
 	 * Reverse dictionary of edges, so we can travel from targets to sources in the augmenting path algorithm.
 	 */
 	private Dictionary<String, String> reverseEdges = new Hashtable<String, String>();
+	/**
+	 * The graph for which this MMS is a Maximum Matching Set
+	 */
+	private Graph graph;
 	
+	public MMS(Graph graph) {
+		this.graph = graph;
+	}
+
+	public Graph getGraph() {
+		return graph;
+	}
+
 	/**
 	 * This methods adds a matching edge to the MMS. It also fills the matched and unmatched nodes set
 	 * @param source The source of the edge, the matching node
@@ -51,6 +63,14 @@ public class MMS {
 		
 	}
 	
+	public Set<String> getMatchedNodes() {
+		return matchedNodes;
+	}
+
+	public Dictionary<String, String> getEdges() {
+		return edges;
+	}
+
 	public boolean isMatched(String node) {
 		return this.matchedNodes.contains(node);
 	}
