@@ -36,6 +36,7 @@ public class MMS {
 	
 	public MMS(Graph graph) {
 		this.graph = graph;
+		this.unmatchedNodes.addAll(Collections.list(this.graph.getNodes()));
 	}
 
 	public Graph getGraph() {
@@ -48,11 +49,7 @@ public class MMS {
 	 * @param target The target of the edge, the matched node
 	 */
 	public void addEdge(String source, String target) {
-		// First, if the source is not a matched node then we add it to the unmatched ones
-		if(!isMatched(source)) {
-			this.unmatchedNodes.add(source);
-		}
-		// Then, if the target was an unmatched node, then we remove it, as it's matched now 
+		// First, if the target was an unmatched node, then we remove it, as it's matched now 
 		if (this.unmatchedNodes.contains(target)) {
 			this.unmatchedNodes.remove(target);
 		}
