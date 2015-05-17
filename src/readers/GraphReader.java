@@ -28,7 +28,8 @@ public class GraphReader {
 		
 		while((line = graphFile.readLine())!= null) {
 			String[] lineInfo = line.split("\t");
-			graph.addEdge(lineInfo[0], lineInfo[1]);
+			// The edge is reversed because in our graph file A -> B means A mentions B and we are actually interested in the opposite (i.e. B influences A) 
+			graph.addEdge(lineInfo[1], lineInfo[0]);
 		}
 		
 		return graph;		
