@@ -55,7 +55,7 @@ public class MMS {
 			this.unmatchedNodes.remove(target);
 		}
 		// Then, adding the target to the matched ones
-		this.unmatchedNodes.add(target);
+		this.matchedNodes.add(target);
 		
 		// And finally we add the edges (both the normal and the reverse one).
 		this.edges.put(source, target);
