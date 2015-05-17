@@ -1,6 +1,5 @@
 package jobs;
 
-import input.GraphReader;
 import mappers.SamplingMapper;
 
 import org.apache.hadoop.conf.Configuration;
@@ -12,6 +11,7 @@ import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.reduce.LongSumReducer;
 
+import readers.GraphReader;
 import vos.Graph;
 import vos.MMS;
 import writers.AlternativeMMSWriter;
