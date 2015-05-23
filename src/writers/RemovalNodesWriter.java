@@ -40,7 +40,7 @@ public class RemovalNodesWriter {
 		// And now, we get N*log(N) random matched nodes from the MMS and set them to be removed by the mappers
 		int n = mms.getGraph().getNumberOfNodes();
 		// We save this number into job's configuration  
-		double configurationsNumber = n*Math.log(n);
+		double configurationsNumber = Math.ceil(n*Math.log(n));
 		context.getConfiguration().setDouble("com.wildfire.configurations_number", configurationsNumber);
 		for(int i = 0; i < configurationsNumber; i++) {
 			mmsFile.write(matchedNodes.get(random.nextInt(matchedSize)));
