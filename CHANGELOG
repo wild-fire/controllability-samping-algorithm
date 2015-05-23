@@ -1,4 +1,5 @@
 * Edge
 
   - First working version of the algorithm
+  - Returning percentage of configurations instead of the absolute number
   - Some explanation on the Readme file
