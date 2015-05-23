@@ -45,4 +45,4 @@ Represent a graph where `2` is connected to `1` and `4`, and `3` is connected to
 
 ### Output format
 
-The output is a TSV file where the first column is the node and the second one the number of times this node is present on a configuration
+The output is a TSV file where the first column is the node and the second one the percentages of configurations this node is in. If a node doesn't show up in this file it's not on any configuration.

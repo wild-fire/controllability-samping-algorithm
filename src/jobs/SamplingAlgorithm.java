@@ -4,6 +4,7 @@ import mappers.SamplingMapper;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.DoubleWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
@@ -12,6 +13,7 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.reduce.LongSumReducer;
 
 import readers.GraphReader;
+import reducers.ConfigurationsPercentageReducer;
 import vos.Graph;
 import vos.MMS;
 import writers.MMSWriter;
@@ -36,9 +38,10 @@ public class SamplingAlgorithm {
 		job.setJarByClass(SamplingAlgorithm.class);
 		job.setMapperClass(SamplingMapper.class);
 		job.setCombinerClass(LongSumReducer.class);
-		job.setReducerClass(LongSumReducer.class);
+		job.setMapOutputValueClass(LongWritable.class);
+		job.setReducerClass(ConfigurationsPercentageReducer.class);
 		job.setOutputKeyClass(Text.class);
-		job.setOutputValueClass(LongWritable.class);
+		job.setOutputValueClass(DoubleWritable.class);
 	    FileInputFormat.setInputPaths(job, args[1] + "/removal-nodes.csv");
 		FileOutputFormat.setOutputPath(job, new Path(args[2]));
 		System.exit(job.waitForCompletion(true) ? 0 : 1);
