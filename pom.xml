@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.wildfire</groupId>
   <artifactId>controllability-samping-algorithm</artifactId>
-  <version>1.0.0.alpha</version>
+  <version>1.0.0</version>
   <name>Controllability Sampling Algorithm</name>
   <build>
     <sourceDirectory>src</sourceDirectory>
