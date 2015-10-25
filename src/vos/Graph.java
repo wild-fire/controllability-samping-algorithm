@@ -47,6 +47,15 @@ public class Graph implements Serializable {
 		this.neighbours.get(source).add(target);
 	}
 
+
+	public void addEdge(String line) {
+		String[] lineInfo = line.split("\t");
+		if(lineInfo.length >= 2) {
+			// The edge is reversed because in our graph file A -> B means A mentions B and we are actually interested in the opposite (i.e. B influences A) 
+			this.addEdge(lineInfo[1], lineInfo[0]);
+		}		
+	}
+	
 	public Graph clone() {
 		Graph g = new Graph();
 		for (String source : Collections.list(neighbours.keys())) {
