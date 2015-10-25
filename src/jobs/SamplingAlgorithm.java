@@ -26,8 +26,6 @@ public class SamplingAlgorithm {
 
 		SparkConf sparkConf = new SparkConf().setAppName("OutlierPrune").setMaster("local[2]").set("spark.executor.memory","4g");
 		sparkConf.set("com.wildfire.graph_file_path", args[0]);
-		sparkConf.set("com.wildfire.mms_file_path", args[1] + "/mms.csv");
-		sparkConf.set("com.wildfire.removal_nodes_file_path", args[1] + "/removal-nodes.csv");
 
 		JavaSparkContext ctx = new JavaSparkContext(sparkConf);
 
@@ -36,7 +34,7 @@ public class SamplingAlgorithm {
 		// First, we read the graph and get the original MMS
 		Graph graph = GraphReader.read(ctx);
 
-		System.out.println(graph.getNeighbours());
+//		System.out.println(graph.getNeighbours());
 
 		System.out.println("Calculando MMS inicial");
 		MMS mms = graph.clone().getMMS();
@@ -81,7 +79,7 @@ public class SamplingAlgorithm {
 				mms = alternativesMMS.get(random.nextInt(alternativesMMS.size()));
 				// and store the unmatched nodes (a.k.a as driver nodes)
 				driverNodesSets.add(mms.getUnmatchedNodes().toArray(new String[mms.getUnmatchedNodes().size()]));
-				System.out.print(mms.getEdges());
+//				System.out.print(mms.getEdges());
 			} else {
 				// if we don't have any alternative we need to recover the original MMS. Otherwise we would lose a node from the MMS and the results from this point will be wrong
 				mms = originalMms;
@@ -130,7 +128,7 @@ public class SamplingAlgorithm {
 			  public Tuple2<String, Double> call(Tuple2<String, Integer> node) { return new Tuple2<String, Double>(node._1, node._2/alternativeMMSNumber); }
 			});
 
-		controllability.saveAsTextFile(args[2]);
+		controllability.saveAsTextFile(args[1]);
 
 	}
 
