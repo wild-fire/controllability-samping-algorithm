@@ -57,6 +57,8 @@ public class SamplingAlgorithm {
 			ArrayList<String> matchedNodes = new ArrayList<String>(mms.getMatchedNodes());
 			String nodeToRemove = matchedNodes.get(random.nextInt(matchedNodes.size()));
 
+			// And save the original MMS, as we will need it in case there's no valid one
+			MMS originalMms = mms.clone();
 
 			// We prepare the array where we are going to save the configurations of unmatched nodes
 			ArrayList<MMS> alternativesMMS = new ArrayList<MMS>();
@@ -74,16 +76,18 @@ public class SamplingAlgorithm {
 				nodeToRemove = matchedNodes.get(random.nextInt(matchedNodes.size()));
 			}
 
-			System.out.print(nodeToRemove + " -> ");
-			System.out.print(mms.getEdges());
-			System.out.println();
-
 			// Now we get a random alternative configuration (if there's any)
 			if(!alternativesMMS.isEmpty()) {
 				mms = alternativesMMS.get(random.nextInt(alternativesMMS.size()));
 				// and store the unmatched nodes (a.k.a as driver nodes)
 				driverNodesSets.add(mms.getUnmatchedNodes().toArray(new String[mms.getUnmatchedNodes().size()]));
+				System.out.print(mms.getEdges());
+			} else {
+				// if we don't have any alternative we need to recover the original MMS. Otherwise we would lose a node from the MMS and the results from this point will be wrong
+				mms = originalMms;
 			}
+
+			System.out.println();
 
 			// We reload the graph so we recover all the removed edges
 			mms.setGraph(graph.clone());
