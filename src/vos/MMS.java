@@ -1,5 +1,6 @@
 package vos;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Dictionary;
@@ -12,7 +13,11 @@ import java.util.Set;
  * @author David J. Brenes
  *
  */
-public class MMS {
+public class MMS implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7217771981456337166L;
 	/**
 	 * Set of matched nodes. Those that are target in any of the edges
 	 */
@@ -35,14 +40,31 @@ public class MMS {
 	private Graph graph;
 	
 	public MMS(Graph graph) {
-		this.graph = graph;
-		this.unmatchedNodes.addAll(Collections.list(this.graph.getNodes()));
+		this.setGraph(graph);
+		if(this.graph != null) {
+			this.unmatchedNodes.addAll(Collections.list(this.graph.getNodes()));
+		}
 	}
+
 
 	public Graph getGraph() {
 		return graph;
 	}
 
+	public void setGraph(Graph g) {
+		this.graph = g;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public MMS clone() {
+		MMS clonedMMS = new MMS(this.graph);
+		clonedMMS.matchedNodes = (HashSet<String>) this.matchedNodes.clone();
+		clonedMMS.unmatchedNodes = (HashSet<String>) this.unmatchedNodes.clone();
+		clonedMMS.edges = (Hashtable<String, String>) this.edges.clone();
+		clonedMMS.reverseEdges = (Hashtable<String, String>) this.reverseEdges.clone();
+		return clonedMMS;
+	}
+	
 	/**
 	 * This methods adds a matching edge to the MMS. It also fills the matched and unmatched nodes set
 	 * @param source The source of the edge, the matching node
