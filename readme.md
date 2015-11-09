@@ -14,7 +14,7 @@ Since obtaining all the configurations can be prohibitive for large graphs due t
 
 ## Requirements
 
-This project depends on the Hadoop 2.6.0 client library and it has been included in the Maven descriptor file (pom.xml) so, if you have Maven in your system, all you need to do is
+This project depends on Spark 2.1.0 and Hadoop 2.6.0 client library. Both have been included in the Maven descriptor file (pom.xml) so, if you have Maven in your system, all you need to do is
 
 ```
 mvn install
@@ -27,7 +27,7 @@ If you have no Maven you can downolad it from http://maven.apache.org/ and maybe
 On the jar folder you can find compiled jar files with all the classes required to run the jobs. To run them you just have to use the following command:
 
 ```
-hadoop jar target/controllability-samping-algorithm-VERSION.jar jobs.SamplingAlgorithm path-to-graph.tsv tmp-folder output-folder
+spark-submit --class jobs.SamplingAlgorithm target/controllability-samping-algorithm-VERSION.jar path-to-graph.tsv output-folder
 ```
 
 ### Input format
